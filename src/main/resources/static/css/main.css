@@ -312,9 +312,9 @@ svg, .fas, .list-item i {
     font-size: 14px !important;
 }
 
-.confirm {
-    display: none;
-}
+/*.confirm {*/
+    /*display: none;*/
+/*}*/
 
 .safe .confirm {
     display: inline;
