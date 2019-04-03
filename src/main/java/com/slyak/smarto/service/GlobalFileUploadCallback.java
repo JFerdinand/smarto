@@ -51,15 +51,16 @@ public class GlobalFileUploadCallback implements FileUploadCallback<GlobalFile, 
     public GlobalFile saveMFile(MultipartFile multipartFile) {
         InputStream inputStream = multipartFile.getInputStream();
         InputStreamByteSource byteSource = new InputStreamByteSource(inputStream);
+        String filename = multipartFile.getOriginalFilename();
+        String fileId = fileStoreService.store(inputStream, filename);
         try {
             String md5 = byteSource.hash(Hashing.md5()).toString();
             GlobalFile globalFile = globalFileRepository.findByMd5(md5);
             if (globalFile == null) {
                 globalFile = new GlobalFile();
-                String filename = multipartFile.getOriginalFilename();
                 globalFile.setName(filename);
                 globalFile.setSize(multipartFile.getSize());
-                globalFile.setId(fileStoreService.store(inputStream, filename));
+                globalFile.setId(fileId);
                 return globalFileRepository.save(globalFile);
             }
 
