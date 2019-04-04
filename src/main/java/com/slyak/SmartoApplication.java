@@ -20,8 +20,8 @@ import java.util.concurrent.Executors;
         repositoryBaseClass = GenericJpaRepositoryImpl.class,
         repositoryFactoryBeanClass = GenericJpaRepositoryFactoryBean.class
 )
-@EnableTransactionManagement
-@EnableAsync
+@EnableTransactionManagement // Spring Boot的事务管理
+@EnableAsync //可以异步执行，开启@Async
 @Configuration
 public class SmartoApplication {
 
