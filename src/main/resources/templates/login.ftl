@@ -1,5 +1,6 @@
 <html>
 <head>
+    <meta charset=utf-8>
     <@bootstrap.cssAndJs/>
     <@slyak.css url="/css/login.css"/>
 </head>
