@@ -8,11 +8,11 @@
     <div class="container login">
         <div class="title">欢迎登陆</div>
         <form>
-            <div>
+            <div class="user">
                 <span>用户名</span>
                 <input type="text">
             </div>
-            <div>
+            <div class="pwd">
                 <span>密码</span>
                 <input type="password">
             </div>
