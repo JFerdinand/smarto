@@ -7,17 +7,17 @@
 <body>
     <div class="container login">
         <div class="title">欢迎登陆</div>
-        <form>
+        <form action="/login" method="post">
             <div class="user">
                 <span>用户名</span>
-                <input type="text">
+                <input name="userName" type="text">
             </div>
             <div class="pwd">
                 <span>密码</span>
-                <input type="password">
+                <input name="password" type="password">
             </div>
             <div class="btns">
-                <button class="btn btn-primary">登陆</button>
+                <button class="btn btn-primary" type="submit">登陆</button>
             </div>
         </form>
     </div>
