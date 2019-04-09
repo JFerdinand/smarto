@@ -97,4 +97,6 @@ public interface SmartoManager {
     void saveMirror(Mirror mirror);
 
     void execProjectScripts(Long id);
+
+    UserInfo queryByUserName(String userName);
 }

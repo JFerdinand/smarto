@@ -91,6 +91,8 @@ public class SmartoManagerImpl implements SmartoManager, ApplicationEventPublish
 
     private final FreemarkerTemplateRender templateRender;
 
+    private final UserInfoRepository userInfoRepository;
+
     private Map<BatchOwner, BatchProvider> batchProviders = Maps.newHashMap();
 
     private ApplicationEventPublisher eventPublisher;
@@ -116,7 +118,8 @@ public class SmartoManagerImpl implements SmartoManager, ApplicationEventPublish
             ProjectGroupHostRepository projectGroupHostRepository,
             ProjectGroupScriptRepository projectGroupScriptRepository,
             GlobalFileRepository globalFileRepository,
-            MirrorRepository mirrorRepository) {
+            MirrorRepository mirrorRepository,
+            UserInfoRepository userInfoRepository) {
         this.projectRepository = projectRepository;
         this.scriptFileRepository = scriptFileRepository;
         this.projectGroupRepository = projectGroupRepository;
@@ -133,6 +136,7 @@ public class SmartoManagerImpl implements SmartoManager, ApplicationEventPublish
         this.projectGroupScriptRepository = projectGroupScriptRepository;
         this.globalFileRepository = globalFileRepository;
         this.mirrorRepository = mirrorRepository;
+        this.userInfoRepository = userInfoRepository;
     }
 
     @Override
@@ -748,5 +752,10 @@ public class SmartoManagerImpl implements SmartoManager, ApplicationEventPublish
             }
             break;
         }
+    }
+
+    @Override
+    public UserInfo queryByUserName(String userName) {
+        return userInfoRepository.queryByUserName(userName);
     }
 }
