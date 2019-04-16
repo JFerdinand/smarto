@@ -25,4 +25,9 @@ public class SysRole {
     @ManyToMany
     @JoinTable(name="SysUserRole",joinColumns={@JoinColumn(name="roleId")},inverseJoinColumns={@JoinColumn(name="userId")})
     private List<UserInfo> userInfos;
+
+    @Override
+    public String toString() {
+        return role;
+    }
 }

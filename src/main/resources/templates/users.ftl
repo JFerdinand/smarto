@@ -3,9 +3,9 @@
 <table class="table table-hover">
     <thead>
     <tr>
-        <th scope="col">名称</th>
-        <th scope="col">描述</th>
-        <th scope="col">操作</th>
+        <th scope="col">用户名</th>
+        <th scope="col">角色</th>
+        <th scope="col">状态</th>
     </tr>
     </thead>
     <tbody>
@@ -14,12 +14,8 @@
             <td>${project.name}</td>
             <td>${project.description}</td>
             <td>
-                <@shiro.hasPermission name="smarto:projects:manage">
                 <a href="<@slyak.query url="/project/groups?id=${project.id}"/>">管理</a>
-                </@shiro.hasPermission>
-                <@shiro.hasPermission name="smarto:projects:delete">
                 <@bootstrap.a href="/project/delete?id=${project.id}" title="删除" class="confirm ajax"/>
-                </@shiro.hasPermission>
             </td>
         </tr>
         <#else >

@@ -3,6 +3,7 @@ package com.slyak.smarto.web;
 import com.slyak.smarto.domain.*;
 import com.slyak.smarto.service.SmartoManager;
 import com.slyak.web.support.data.RequestParamBind;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -24,6 +25,7 @@ public class ProjectController {
     private SmartoManager smartoManager;
 
     @RequestMapping("/projects")
+    @RequiresPermissions("smarto:projects:menu")
     public void index(Pageable pageable, ModelMap modelMap) {
         modelMap.put("page", smartoManager.queryProjects(pageable));
     }

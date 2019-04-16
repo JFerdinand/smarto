@@ -3,6 +3,7 @@ package com.slyak.smarto.domain;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -12,7 +13,7 @@ import java.util.List;
 @Entity
 @Table(name = "t_user")
 @Data
-public class UserInfo {
+public class UserInfo implements Serializable {
     @Id
     @GeneratedValue
     private Integer userId;
@@ -31,5 +32,10 @@ public class UserInfo {
      */
     public String getCredentialsSalt(){
         return this.userName+this.salt;
+    }
+
+    @Override
+    public String toString() {
+        return userName;
     }
 }
