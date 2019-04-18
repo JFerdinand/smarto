@@ -20,16 +20,24 @@
 
 <#macro html>
     <@cleanHtml>
-        <@bootstrap.navbar brand="SMARTO" left=[
-        {'title':'脚本','url':'/scripts'},
-        {'title':'任务','url':'/logs'},
-        {'title':'主机','url':'/hosts'},
-        {'title':'项目','url':'/projects'},
-        {'title':'镜像','url':'/mirrors'}
-        ] right=[
-        {'title':'<i class="fa fa-question-circle fa-lg"></i>','url':'/help'},
-        {'title':'<i class="fa fa-cog fa-lg"></i>','url':'/admin/index'}
-        ]/>
+        <#if Session['top']??>
+            <@bootstrap.navbar brand="SMARTO" left=[
+            {'title':'脚本','url':'/scripts'},
+            {'title':'任务','url':'/logs'},
+            {'title':'主机','url':'/hosts'},
+            {'title':'项目','url':'/projects'},
+            {'title':'镜像','url':'/mirrors'}
+            ] right=[
+            {'title':'<i class="fa fa-question-circle fa-lg"></i>','url':'/help'},
+            {'title':'<i class="fa fa-cog fa-lg"></i>','url':'/admin/index'}
+            ]/>
+        <#else>
+            <@bootstrap.navbar brand="SMARTO" left=Session['top'] right=[
+            {'title':'<i class="fa fa-question-circle fa-lg"></i>','url':'/help'},
+            {'title':'<i class="fa fa-cog fa-lg"></i>','url':'/admin/index'}
+            ]/>
+        </#if>
+
     <div class="container-fluid p-0">
         <#nested />
     </div>
@@ -52,7 +60,25 @@
                 <#if btnCreate.modal??>
                     <@bootstrap.a href="${btnCreate.url}" title=btnCreate.title modal=true showSubmit=btnCreate.showSubmit!false class="btn btn-sm ml-3"/>
                 <#else >
-                    <a class="btn btn-sm ml-3" href="<@slyak.query url="${btnCreate.url}"/>">${btnCreate.title}</a>
+                    <#switch btnCreate.title>
+                        <#case "创建脚本">
+                            <@shiro.hasPermission name="smarto:scripts:create">
+                            <a class="btn btn-sm ml-3" href="<@slyak.query url="${btnCreate.url}"/>">${btnCreate.title}</a>
+                            </@shiro.hasPermission>
+                            <#break >
+                        <#case "创建项目">
+                            <@shiro.hasPermission name="smarto:projects:create">
+                            <a class="btn btn-sm ml-3" href="<@slyak.query url="${btnCreate.url}"/>">${btnCreate.title}</a>
+                            </@shiro.hasPermission>
+                            <#break >
+                        <#case "创建主机">
+                            <@shiro.hasPermission name="smarto:hosts:create">
+                                <a class="btn btn-sm ml-3" href="<@slyak.query url="${btnCreate.url}"/>">${btnCreate.title}</a>
+                            </@shiro.hasPermission>
+                            <#break >
+                        <#default>
+                        <a class="btn btn-sm ml-3" href="<@slyak.query url="${btnCreate.url}"/>">${btnCreate.title}</a>
+                    </#switch>
                 </#if>
             </#if>
         </div>

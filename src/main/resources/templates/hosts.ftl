@@ -16,10 +16,16 @@
             <td>${host.ip}</td>
             <td>${host.testHost?string("Y","N")}</td>
             <td>
+                <@shiro.hasPermission name="smarto:hosts:test">
                 <a href="<@slyak.query url='/host/test?id=${host.id}'/>" class="ajax"
                    data-cb="{'true':'连接成功!','false':'连接失败!'}">测试</a>
+                </@shiro.hasPermission>
+                <@shiro.hasPermission name="smarto:hosts:edit">
                 <@slyakUI.a href="/host?id=${host.id}">编辑</@slyakUI.a>
+                </@shiro.hasPermission>
+                <@shiro.hasPermission name="smarto:hosts:delete">
                 <@slyakUI.a href="/host/delete?id=${host.id}" class="confirm ajax">删除</@slyakUI.a>
+                </@shiro.hasPermission>
             </td>
         </tr>
         <#else >

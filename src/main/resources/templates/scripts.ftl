@@ -29,9 +29,13 @@
             </td>
             <td>
                 <@bootstrap.a href="#" title="使用帮助" modal=true modalContent="${sc.help}"/>
-                <@slyakUI.a href="/script/content?id=${sc.id}">管理</@slyakUI.a>
-                <a href="<@slyak.query url="/script/delete?id=${sc.id}"/>" class="confirm ajax"
+                <@shiro.hasPermission name="smarto:scripts:manage">
+                    <@slyakUI.a href="/script/content?id=${sc.id}">管理</@slyakUI.a>
+                </@shiro.hasPermission>
+                <@shiro.hasPermission name="smarto:scripts:delete">
+                 <a href="<@slyak.query url="/script/delete?id=${sc.id}"/>" class="confirm ajax"
                    data-cb="mentionDelete">删除</a>
+                </@shiro.hasPermission>
             </td>
         </tr>
         <#else >

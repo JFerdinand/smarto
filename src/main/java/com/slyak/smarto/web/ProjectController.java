@@ -4,13 +4,21 @@ import com.slyak.smarto.domain.*;
 import com.slyak.smarto.service.SmartoManager;
 import com.slyak.web.support.data.RequestParamBind;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static org.apache.shiro.SecurityUtils.getSubject;
 
 /**
  * .
@@ -26,7 +34,29 @@ public class ProjectController {
 
     @RequestMapping("/projects")
     @RequiresPermissions("smarto:projects:menu")
-    public void index(Pageable pageable, ModelMap modelMap) {
+    public void index(Pageable pageable, ModelMap modelMap, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        Subject subject = getSubject();
+        UserInfo userInfo = (UserInfo) subject.getPrincipal();
+        List<SysRole> roleList = userInfo.getRoleList();
+        List<Map<String,String>> permissions = new ArrayList<>();
+        for (SysRole role:roleList
+             ) {
+            List<SysPermission> permissionsTemp = role.getPermissions();
+            for (SysPermission permission:permissionsTemp
+                 ) {
+
+                if (!permission.getAncestorIds().contains("/")) {
+                    permissions.add(new HashMap<String,String>(2){
+                        {
+                            put("title",permission.getName());
+                            put("url",permission.getUrl());
+                        }
+                    });
+                }
+            }
+        }
+        session.setAttribute("top", permissions);
         modelMap.put("page", smartoManager.queryProjects(pageable));
     }
 

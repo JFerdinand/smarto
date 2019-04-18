@@ -22,9 +22,10 @@
                     <td rowspan="${row}">${batch.id}</td>
                 </#if>
                 <td>${host.ip}-${host.name}</td>
+
                 <td>
                     <#list batch.scripts as script>
-                        <a href="<@slyak.query url='/script/content?id=${script.id}'/>">${script.name}</a><#if script_has_next>
+                        <a <@shiro.hasPermission name="smarto:scripts:manage"> href="<@slyak.query url='/script/content?id=${script.id}'/>" </@shiro.hasPermission>>${script.name}</a><#if script_has_next>
                         <br></#if>
                     </#list>
                 </td>

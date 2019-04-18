@@ -56,4 +56,17 @@ public class MyShiroRealm extends AuthorizingRealm {
                 getName()
         );
     }
+
+    @Override
+    public  boolean isPermitted(PrincipalCollection principals, String permission){
+        UserInfo user = (UserInfo) principals.getPrimaryPrincipal();
+        // 如果是管理员拥有所有的访问权限
+        return user.getUserId() == 1 || super.isPermitted(principals, permission);
+    }
+    @Override
+    public boolean hasRole(PrincipalCollection principals, String roleIdentifier) {
+        UserInfo user = (UserInfo) principals.getPrimaryPrincipal();
+        // 如果是管理员拥有所有的角色权限
+        return user.getUserId() == 1 || super.hasRole(principals, roleIdentifier);
+    }
 }
