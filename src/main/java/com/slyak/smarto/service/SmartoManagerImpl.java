@@ -93,6 +93,8 @@ public class SmartoManagerImpl implements SmartoManager, ApplicationEventPublish
 
     private final UserInfoRepository userInfoRepository;
 
+    private final SysRoleRepository sysRoleRepository;
+
     private Map<BatchOwner, BatchProvider> batchProviders = Maps.newHashMap();
 
     private ApplicationEventPublisher eventPublisher;
@@ -119,7 +121,8 @@ public class SmartoManagerImpl implements SmartoManager, ApplicationEventPublish
             ProjectGroupScriptRepository projectGroupScriptRepository,
             GlobalFileRepository globalFileRepository,
             MirrorRepository mirrorRepository,
-            UserInfoRepository userInfoRepository) {
+            UserInfoRepository userInfoRepository,
+            SysRoleRepository sysRoleRepository) {
         this.projectRepository = projectRepository;
         this.scriptFileRepository = scriptFileRepository;
         this.projectGroupRepository = projectGroupRepository;
@@ -137,6 +140,7 @@ public class SmartoManagerImpl implements SmartoManager, ApplicationEventPublish
         this.globalFileRepository = globalFileRepository;
         this.mirrorRepository = mirrorRepository;
         this.userInfoRepository = userInfoRepository;
+        this.sysRoleRepository = sysRoleRepository;
     }
 
     @Override
@@ -757,5 +761,21 @@ public class SmartoManagerImpl implements SmartoManager, ApplicationEventPublish
     @Override
     public UserInfo queryByUserName(String userName) {
         return userInfoRepository.queryByUserName(userName);
+    }
+
+    @Override
+    public Page<UserInfo> queryUsers(Pageable pageable) {
+        return userInfoRepository.queryUsersByState((byte) 1,pageable);
+    }
+
+    @Override
+    public List<SysRole> queryRoles() {
+        return sysRoleRepository.findAll();
+    }
+
+    @Override
+    @Transactional
+    public void saveUser(UserInfo userInfo) {
+        userInfoRepository.save(userInfo);
     }
 }

@@ -39,7 +39,7 @@ public class HostController {
     public void host(@RequestParamBind("id") Host host, ModelMap modelMap) {
         modelMap.put("oss", optionConverter.convert(smartoManager.queryOss()));
         if (host != null) {
-            modelMap.put("script", host);
+            modelMap.put("host", host);
         }
     }
 

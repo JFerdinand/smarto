@@ -99,4 +99,10 @@ public interface SmartoManager {
     void execProjectScripts(Long id);
 
     UserInfo queryByUserName(String userName);
+
+    Page<UserInfo> queryUsers(Pageable pageable);
+
+    List<SysRole> queryRoles();
+
+    void saveUser(UserInfo userInfo);
 }

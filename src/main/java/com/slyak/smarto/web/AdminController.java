@@ -1,17 +1,22 @@
 package com.slyak.smarto.web;
 
-import com.slyak.smarto.domain.Host;
-import com.slyak.smarto.domain.Mirror;
-import com.slyak.smarto.domain.OS;
+import com.slyak.smarto.converter.OsVersionsOptionConverter;
+import com.slyak.smarto.converter.SysRoleOptionConverter;
+import com.slyak.smarto.domain.*;
 import com.slyak.smarto.service.SmartoManager;
 import com.slyak.web.support.data.RequestParamBind;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * .
@@ -25,6 +30,38 @@ public class AdminController {
 
     @Autowired
     private SmartoManager smartoManager;
+
+    @Autowired
+    private SysRoleOptionConverter optionConverter;
+
+    @RequestMapping("/users")
+    public void users(Pageable pageable, ModelMap modelMap) {
+        modelMap.put("page",smartoManager.queryUsers(pageable));
+    }
+
+    @GetMapping("/user")
+    public void user(@RequestParamBind("id")UserInfo userInfo, ModelMap modelMap) {
+        modelMap.put("sysRoles", optionConverter.convert(smartoManager.queryRoles()));
+        if (userInfo != null) {
+            modelMap.put("userInfo", userInfo);
+        }
+    }
+
+    @PostMapping("/user")
+    public void user(@RequestParamBind("id") UserInfo userInfo, HttpServletRequest request) {
+        List<SysRole> list = new ArrayList<>();
+        String[] ids = request.getParameterValues("roleIds");
+        for (String id:ids
+             ) {
+            list.add(new SysRole(){
+                {
+                    setRoleId(Integer.valueOf(id));
+                }
+            });
+        }
+        userInfo.setRoleList(list);
+        smartoManager.saveUser(userInfo);
+    }
 
     @GetMapping("/index")
     public void index(ModelMap modelMap) {
